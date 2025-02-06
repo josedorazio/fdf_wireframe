@@ -21,18 +21,7 @@ OBJS = $(SRCS:.c=.o)
 LIBFT = libft/libft.a
 GNL = get_next_line/gnl.a
 PRINTF = printf/ft_printf.a
-
-ifeq ($(UNAME_S),Linux)
-	MINILIBX_DIR	:= $(LIB)minilibx/minilibx_linux/
-	#MINILIBX		:= $(MINILIBX_DIR)libmlx.a
-	MINILIBXCC		:= -I$(MINILIBX_DIR) -L $(MINILIBX_DIR) -lmlx
-	LIBS			:= -lXext -lX11 -lm
-else ifeq ($(UNAME_S),Darwin)
-	MINILIBX_DIR	:= $(LIB)minilibx/minilibx_macos/
-	#MINILIBX		:= $(MINILIBX_DIR)libmlx.a
-	MINILIBXCC		:= -I$(MINILIBX_DIR) -L $(MINILIBX_DIR) -lmlx
-	LIBS			:= -framework OpenGL -framework AppKit
-endif
+MLX_A = minilibx/libmlx.a
 
 
 CC = cc
@@ -43,9 +32,10 @@ AR = ar rcs
 all: $(NAME)
 
 $(NAME): $(OBJS) $(LIBFT) $(GNL) $(PRINTF) $(MINILIBXCC)
-		$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(GNL) $(PRINTF) $(MINILIBXCC) -o $(NAME)
+		$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(GNL) $(PRINTF) -L$(MINILIBXCC) -lmlx -lm -o $(NAME) -framework OpenGL -framework AppKit
+
 %.o : %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -Imlx -c $< -o $@
 	@echo "Compiled $<."
 
 $(LIBFT):
