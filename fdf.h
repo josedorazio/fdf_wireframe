@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdorazio <jdorazio@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: jdorazio <jdorazio@student.42.madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 14:15:39 by jdorazio          #+#    #+#             */
-/*   Updated: 2025/02/06 15:49:53 by jdorazio         ###   ########.fr       */
+/*   Updated: 2025/02/10 22:25:39 by jdorazio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,85 @@
 // Medidas de la interfaz
 # define WIDTH 1920
 # define HEIGHT 1080
+# define HEIGHT_SCALE 100
+#define M_PI 3.14159265358979323846
+
+typedef struct s_map
+{
+	int	height;
+	int	*width;
+	int	**matrix;
+}	t_map;
+
+typedef struct s_point
+{
+	int	x;
+	int	y;
+	int	z;
+
+}	t_point;
+
+typedef struct	s_data {
+	void	*img;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+}			t_data;
+
+
+typedef struct s_display
+{
+	void	*mlx;
+	void	*win;
+	t_data	img;
+	t_map	*map;
+}	t_display;
 
 
 
 
-int	main(void);
+// MAIN FILE 
+
+// #----------# Program #----------#
+int	main(int ac, char **av);
+// #----------#  #----------#
+
+// #----------# Error Handling #----------#
+int	terminate(int error_code);
+// #----------#  #----------#
+
+// #----------# VALIDATE #----------#
+int	validate(char *num);
+int	convert(char *num);
+int	ft_is_sign(char c);
+
+// #----------# MAP INIT #----------#
+void	load_map(char *file, t_map *map);
+void	fill_matrix(int fd, t_map *map);
+void	map_init(char *file, t_map *map);
+void	map_dimensions(char *file, t_map *map);
+
+// #----------# MAP INIT UTILS #----------#
+void	vertical_dim(char *file, t_map *map);
+void	horizontal_dim(int fd, t_map *map);
+char	*clear_line(int fd);
+
+
+// #----------# START #----------#
+void	system_init(t_map *map);
+int	init_display_mlx(t_map *map, t_display *mlx);
+
+
+
+
+// #----------# PROJECTION #----------#
+void	draw_map(t_map *map);
+
+
+
+
+
 
 
 #endif
