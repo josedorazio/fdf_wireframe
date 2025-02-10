@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdorazio <jdorazio@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: jdorazio <jdorazio@student.42.madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 11:39:24 by jdorazio          #+#    #+#             */
-/*   Updated: 2024/10/08 10:41:15 by jdorazio         ###   ########.fr       */
+/*   Updated: 2025/02/10 09:13:27 by jdorazio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,13 @@
 # include <limits.h>
 # include <fcntl.h>
 
+# include "../libft/libft.h"
+
 char	*get_next_line(int fd);
-char	*ft_strdup(const char *s);
-size_t	ft_strlcpy(char *dst, const char *src, size_t size);
-char	*ft_strjoin(char const *s1, char const *s2);
-char	*ft_strchr(const char	*s, int c);
-size_t	ft_strlen(const char *s);
+// char	*ft_strdup(const char *s);
+// size_t	ft_strlcpy(char *dst, const char *src, size_t size);
+// char	*ft_strjoin(char const *s1, char const *s2);
+// char	*ft_strchr(const char	*s, int c);
+// size_t	ft_strlen(const char *s);
 
 #endif

@@ -10,32 +10,32 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME = fdf
+NAME = FDF
 
 #  find *.c | xargs echo
 
-SRCS = main.c
+SRCS = errors.c main.c map_init.c map_init_utils.c start.c validate.c  
 
 OBJS = $(SRCS:.c=.o)
 
 LIBFT = libft/libft.a
-GNL = get_next_line/gnl.a
 PRINTF = printf/ft_printf.a
+GNL = get_next_line/gnl.a
 MLX_A = minilibx/libmlx.a
 
-
 CC = cc
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra -fPIC 
 # -fsanitize=address
 AR = ar rcs
+MLX_FLAGS = -Lminilibx -lmlx -lX11 -lXext -lm
 
 all: $(NAME)
 
-$(NAME): $(OBJS) $(LIBFT) $(GNL) $(PRINTF) $(MINILIBXCC)
-		$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(GNL) $(PRINTF) -L$(MINILIBXCC) -lmlx -lm -o $(NAME) -framework OpenGL -framework AppKit
+$(NAME): $(OBJS) $(GNL) $(LIBFT)  $(PRINTF) $(MLX_A)
+		$(CC) $(CFLAGS) $(OBJS) $(GNL) $(LIBFT)  $(PRINTF) $(MLX_FLAGS) -no-pie -o $(NAME)
 
 %.o : %.c
-	$(CC) $(CFLAGS) -Imlx -c $< -o $@
+	$(CC) $(CFLAGS) -Iminilibx -c $< -o $@
 	@echo "Compiled $<."
 
 $(LIBFT):
@@ -49,7 +49,7 @@ $(PRINTF):
 	make -C printf
 	@echo "Compiled PRINTF"
 
-$(MINILIBXCC):
+$(MLX_A):
 	make -C minilibx
 	@echo "Compiled MINILIBX"
 
