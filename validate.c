@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validate.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdorazio <jdorazio@student.42.madrid.co    +#+  +:+       +#+        */
+/*   By: jdorazio <jdorazio@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 14:37:22 by jdorazio          #+#    #+#             */
-/*   Updated: 2025/02/10 14:37:52 by jdorazio         ###   ########.fr       */
+/*   Updated: 2025/02/11 14:33:51 by jdorazio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ int	validate(char *num)
 int	convert(char *npt)
 {
 	int	num;
-	
+
+	num = 0;
 	if (!validate(npt))
 		terminate(4);
 	if (*npt != '\0' || *npt != ' ')
