@@ -6,7 +6,7 @@
 /*   By: jdorazio <jdorazio@student.42.madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 13:48:39 by jdorazio          #+#    #+#             */
-/*   Updated: 2025/02/10 21:47:30 by jdorazio         ###   ########.fr       */
+/*   Updated: 2025/02/11 20:45:24 by jdorazio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,4 +92,28 @@ void	load_map(char *file, t_map *map)
 		perror("Error Opening File\n");
 	fill_matrix(fd, map);
 	close(fd);
+	map->z_min = INT_MAX;
+	map->z_max = INT_MIN;
+	z_values(map);
+}
+
+void	z_values(t_map *map)
+{
+	int	y;
+	int	x;
+
+	y = 0;
+	while (y < map->height)
+	{
+		x = 0;
+		while (x < map->width[y])
+		{
+			if (map->matrix[y][x] < map->z_min)
+				map->z_min = map->matrix[y][x];
+			else if (map->matrix[y][x] > map->z_max)
+				map->z_max = map->matrix[y][x];
+			x++;
+		}
+		y++;
+	}
 }
