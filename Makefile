@@ -14,7 +14,7 @@ NAME = FDF
 
 #  find *.c | xargs echo
 
-SRCS = errors.c main.c map_init.c map_init_utils.c start.c validate.c  
+SRCS = errors.c free_fn.c key_events.c main.c map_init.c map_init_utils.c start.c validate.c
 
 OBJS = $(SRCS:.c=.o)
 
