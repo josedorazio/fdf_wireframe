@@ -6,7 +6,7 @@
 /*   By: jdorazio <jdorazio@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 14:15:39 by jdorazio          #+#    #+#             */
-/*   Updated: 2025/02/11 16:39:35 by jdorazio         ###   ########.fr       */
+/*   Updated: 2025/02/11 17:11:56 by jdorazio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ int	init_display_mlx(t_map *map, t_display *mlx);
 // #----------# PROJECTION #----------#
 void	draw_map(t_display *mlx);
 void	bresenham_line(t_display *mlx, t_point p1, t_point p2);
+void	init_bresenham_line(t_point *p1, t_point *p2, t_delta *delta);
 t_point	create_point(int x, int y, t_display *mlx);
 void	isometric(t_point *p);
 

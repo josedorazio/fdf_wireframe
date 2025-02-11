@@ -6,7 +6,7 @@
 /*   By: jdorazio <jdorazio@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 14:50:21 by jdorazio          #+#    #+#             */
-/*   Updated: 2025/02/11 16:48:47 by jdorazio         ###   ########.fr       */
+/*   Updated: 2025/02/11 17:11:17 by jdorazio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,17 @@ void	bresenham_line(t_display *mlx, t_point p1, t_point p2)
 	{
 		mlx_pixel_put(mlx->mlx, mlx->win, p1.x, p1.y, 0xFFFFFF);
 		err2 = 2 * err;
-		
+		if (err2 > -delta.dy)
+		{
+			err -= delta.dy;
+			p1.x += delta.sign_x;
+		}
+		if (err2 < delta.dx)
+		{
+			err += delta.dx;
+			p1.y += delta.sign_y;
+		}
+
 	}
 
 }
