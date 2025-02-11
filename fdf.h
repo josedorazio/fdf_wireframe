@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdorazio <jdorazio@student.42.madrid.co    +#+  +:+       +#+        */
+/*   By: jdorazio <jdorazio@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 14:15:39 by jdorazio          #+#    #+#             */
-/*   Updated: 2025/02/10 22:25:39 by jdorazio         ###   ########.fr       */
+/*   Updated: 2025/02/11 16:39:35 by jdorazio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@
 # define WIDTH 1920
 # define HEIGHT 1080
 # define HEIGHT_SCALE 100
-#define M_PI 3.14159265358979323846
+# define SCALE 10
+# define M_PI 3.14159265358979323846
 
 typedef struct s_map
 {
@@ -43,8 +44,19 @@ typedef struct s_point
 	int	x;
 	int	y;
 	int	z;
+	int	color;
 
 }	t_point;
+
+typedef struct t_delta
+{
+	int	dx;
+	int	dy;
+	int	sign_x;
+	int	sign_y;
+}	t_delta;
+
+
 
 typedef struct	s_data {
 	void	*img;
@@ -60,13 +72,13 @@ typedef struct s_display
 	void	*mlx;
 	void	*win;
 	t_data	img;
-	t_map	*map;
+	t_map	map;
 }	t_display;
 
 
 
 
-// MAIN FILE 
+// MAIN FILE
 
 // #----------# Program #----------#
 int	main(int ac, char **av);
@@ -101,12 +113,10 @@ int	init_display_mlx(t_map *map, t_display *mlx);
 
 
 // #----------# PROJECTION #----------#
-void	draw_map(t_map *map);
-
-
-
-
-
+void	draw_map(t_display *mlx);
+void	bresenham_line(t_display *mlx, t_point p1, t_point p2);
+t_point	create_point(int x, int y, t_display *mlx);
+void	isometric(t_point *p);
 
 
 #endif
