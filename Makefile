@@ -14,7 +14,8 @@ NAME = FDF
 
 #  find *.c | xargs echo
 
-SRCS = errors.c free_fn.c key_events.c main.c map_init.c map_init_utils.c start.c validate.c
+SRCS = errors.c free_fn.c key_events.c main.c map_init.c map_init_utils.c start.c validate.c\
+	draw.c
 
 OBJS = $(SRCS:.c=.o)
 
@@ -25,7 +26,7 @@ MLX_A = minilibx/libmlx.a
 
 CC = cc
 CFLAGS = -Wall -Werror -Wextra -fPIC 
-# -fsanitize=address
+# -g3 -fsanitize=address
 AR = ar rcs
 MLX_FLAGS = -Lminilibx -lmlx -lX11 -lXext -lm
 
