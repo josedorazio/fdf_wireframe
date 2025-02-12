@@ -6,7 +6,7 @@
 /*   By: jdorazio <jdorazio@student.42.madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 13:48:39 by jdorazio          #+#    #+#             */
-/*   Updated: 2025/02/11 20:45:24 by jdorazio         ###   ########.fr       */
+/*   Updated: 2025/02/12 18:57:23 by jdorazio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ void	map_dimensions(char *file, t_map *map)
 	vertical_dim(file, map);
 	map->width = malloc(map->height * sizeof(int));
 	if (!map->width)
-		terminate(1);
+		terminate(4, map);
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
-			terminate(3);
+			terminate(3, file);
 	horizontal_dim(fd, map);
 	close (fd);
 }
@@ -35,18 +35,18 @@ void	map_init(char *file, t_map *map)
 	
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
-		terminate(3);
+		terminate(3, file);
 	map_dimensions(file, map);
 	close (fd);
 	map->matrix = (int **)ft_calloc(map->height, sizeof(int *));
 	if (!map->matrix)
-		terminate(3);
+		terminate(4, map);
 	i = 0;
 	while (i < map->height)
 	{
 		map->matrix[i] = ft_calloc(map->width[i], sizeof(int));
 		if (!map->matrix[i])
-			terminate(3);
+			terminate(4, map);
 		i++;
 	}
 }
@@ -89,7 +89,7 @@ void	load_map(char *file, t_map *map)
 	// USE TERMINATE FUNCTION FOR ERROR HANDLING
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
-		perror("Error Opening File\n");
+		terminate(3, file);
 	fill_matrix(fd, map);
 	close(fd);
 	map->z_min = INT_MAX;

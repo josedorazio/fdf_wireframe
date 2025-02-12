@@ -6,7 +6,7 @@
 /*   By: jdorazio <jdorazio@student.42.madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 14:05:50 by jdorazio          #+#    #+#             */
-/*   Updated: 2025/02/10 21:47:30 by jdorazio         ###   ########.fr       */
+/*   Updated: 2025/02/12 19:36:18 by jdorazio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	vertical_dim(char *file, t_map *map)
 
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
-		terminate(3);
+		terminate(3, file);
 	map->height = 0;
 	while ((line = get_next_line(fd)) != NULL)
 	{
@@ -42,7 +42,7 @@ void	horizontal_dim(int fd, t_map *map)
 		line = clear_line(fd);
 		arr = ft_split(line, ' ');
 		if (!arr)
-			terminate(3);
+			free(arr);
 		while (arr[cols])
 		{
 			if (arr[cols][0] != '\0' || arr[cols][0] != '\r')
@@ -64,10 +64,7 @@ char *clear_line(int fd)
 
 	line = get_next_line(fd);
 	if (!line)
-	{
-		free(line);
-		terminate(3);
-	}
+		terminate(3, line);
 	len = ft_strlen(line);
 	while (len > 0 && (line[len - 1] == '\n' || line[len - 1] == '\r'))
 		line[--len] = '\0';
