@@ -6,7 +6,7 @@
 /*   By: jdorazio <jdorazio@student.42.madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 19:56:28 by jdorazio          #+#    #+#             */
-/*   Updated: 2025/02/12 23:23:26 by jdorazio         ###   ########.fr       */
+/*   Updated: 2025/02/14 17:10:01 by jdorazio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,9 @@ void	draw_map(t_display *mlx)
 		y++;
 	}
 	ft_printf("Drawing Complete. Updating Window...\n");
+	draw_sidebar(mlx);
 	mlx_put_image_to_window(mlx->mlx,  mlx->win, mlx->img.img, 0 ,0);
+	sidebar_description(mlx);
 }
 
 
@@ -68,7 +70,6 @@ void	bresenham_line(t_display *mlx, t_point p1, t_point p2)
 	err = delta.dx - delta.dy;
 	while (p1.sx != p2.sx || p1.sy != p2.sy)
 	{
-		printf("Entramos a bucle\n");
 		put_pixel(&mlx->img, p1.sx, p1.sy, 0xFFFFFF);
 		err2 = 2 * err;
 		if (err2 > -delta.dy)
@@ -103,6 +104,7 @@ t_point	create_point(int x, int y, t_display *mlx)
 	point.x = x;
 	point.y = y;
 	point.z = mlx->map.matrix[y][x];
+//	mlx->angle = M_PI  /4; // ANGLE DEFAULT 45
 	isometric(&point, mlx);
 	return (point);
 
@@ -110,17 +112,37 @@ t_point	create_point(int x, int y, t_display *mlx)
 
 void	isometric(t_point *p, t_display *mlx)
 {
-	int		x;
-	int		y;
-	int		z;
-	int x_offset = WIDTH / 2;
-	int y_offset = HEIGHT / 2;
-	//float	scale;
+	int x_offset;
+	int y_offset;
+	
+	x_offset = WIDTH / 2;
+	y_offset= HEIGHT / 2;
+	p->x = p->x * mlx->zoom * ZOOM;
+	p->y = p->y * mlx->zoom* ZOOM;
+	p->z = (p->z  * mlx->zoom * ZOOM) / 4;
+	rot_x(p, mlx->rot_x);
+	rot_z(p, mlx->rot_z);
+	p->sx = ((p->x - p->y) * cos(-M_PI / 6)) + x_offset;
+	p->sy = ((p->x + p->y) * sin (-M_PI / 6) - p->z) + y_offset;
+}
+void	rot_x(t_point *p, float angle)
+{
+	int	y;
+	int	z;
 
-	//scale = fmin(WIDTH / mlx->map.width[0], HEIGHT / mlx->map.height / 2);
-	x = p->x * mlx->zoom * ZOOM;
-	y = p->y * mlx->zoom* ZOOM;
-	z = (p->z  * mlx->zoom * ZOOM) / 4;
-	p->sx = ((x - y) * cos(45)) + x_offset;
-	p->sy = ((x + y) * sin (45) - z) + y_offset;
+	y = p->y * cos(angle) - p->z * sin(angle);
+	z = p->y * sin(angle) + p->z * cos(angle);
+	p->y = y;
+	p->z = z;
+}
+
+void	rot_z(t_point *p, float angle)
+{
+	int	x;
+	int	y;
+
+	y = p->x * cos(angle) - p->y * sin(angle);
+	x = p->x * sin(angle) + p->y * cos(angle);
+	p->y = y;
+	p->x = x;
 }
