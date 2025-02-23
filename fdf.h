@@ -6,7 +6,7 @@
 /*   By: jdorazio <jdorazio@student.42.madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 14:15:39 by jdorazio          #+#    #+#             */
-/*   Updated: 2025/02/11 23:24:10 by jdorazio         ###   ########.fr       */
+/*   Updated: 2025/02/14 17:10:28 by jdorazio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,9 @@
 // Medidas de la interfaz
 # define WIDTH 1920
 # define HEIGHT 1080
+# define SIDEBAR 350
 # define M_PI 3.14159265358979323846
+# define ZOOM 10
 
 typedef struct s_map
 {
@@ -46,6 +48,8 @@ typedef struct s_point
 	int	y;
 	int	z;
 	int	color;
+	int	sx;
+	int	sy;
 
 }	t_point;
 
@@ -74,6 +78,11 @@ typedef struct s_display
 	void	*win;
 	t_image	img;
 	t_map	map;
+	float	zoom;
+	float	rot_x;
+	float	rot_y;
+	float	rot_z;
+	float	angle;
 }	t_display;
 
 
@@ -86,7 +95,7 @@ int	main(int ac, char **av);
 // #----------#  #----------#
 
 // #----------# Error Handling #----------#
-int	terminate(int error_code);
+int	terminate(int error_code, void *ptr);
 // #----------#  #----------#
 
 // #----------# VALIDATE #----------#
@@ -108,8 +117,8 @@ char	*clear_line(int fd);
 
 
 // #----------# START #----------#
-void	system_init(t_map *map);
-int		init_display_mlx(t_map *map, t_display *mlx);
+int	system_init(t_map *map);
+int	init_display_mlx(t_map *map, t_display *mlx);
 
 
 
@@ -120,6 +129,9 @@ void	bresenham_line(t_display *mlx, t_point p1, t_point p2);
 void	init_bresenham_line(t_point *p1, t_point *p2, t_delta *delta);
 t_point	create_point(int x, int y, t_display *mlx);
 void	isometric(t_point *p, t_display *mlx);
+void	put_pixel(t_image *img, int x, int y, int color);
+void	rot_x(t_point *p, float angle);
+void	rot_z(t_point *p, float angle);
 
 
 // #----------# KEY EVENT #----------#
@@ -128,6 +140,10 @@ int		free_close(t_display *mlx);
 void	free_display(t_display *mlx);
 void	free_map(t_map *map);
 
+// #----------# SIDEBAR #----------#
+void	draw_sidebar(t_display *mlx);
+void	sidebar_description(t_display *mlx);
+void	update_rot(int keycode, t_display *mlx);
 
 #endif
 	

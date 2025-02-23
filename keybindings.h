@@ -6,7 +6,7 @@
 /*   By: jdorazio <jdorazio@student.42.madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 22:38:37 by jdorazio          #+#    #+#             */
-/*   Updated: 2025/02/12 21:49:24 by jdorazio         ###   ########.fr       */
+/*   Updated: 2025/02/14 17:29:08 by jdorazio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # define DN 17 // Evento Cierre Ventana
 
 
-/* KEY BINDING*/
+/* KEY BINDING KEYBOARD*/
 # define KEY_ESC     65307
 # define KEY_1       49
 # define KEY_2       50
