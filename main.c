@@ -6,7 +6,7 @@
 /*   By: jdorazio <jdorazio@student.42.madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 14:17:04 by jdorazio          #+#    #+#             */
-/*   Updated: 2025/02/12 19:05:40 by jdorazio         ###   ########.fr       */
+/*   Updated: 2025/02/26 18:50:01 by jdorazio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,14 @@ int	main(int ac, char **av)
 	t_map	map;
 
 	if (ac != 2)
-		terminate(1, NULL);
+		return (1);
 	load_map(av[1], &map);
 	printf("Starting System Init\n");
 	system_init(&map);
-    // Free memory
-    for (int i = 0; i < map.height; i++)
-        free(map.matrix[i]);
-    free(map.matrix);
 
-	
+	// FREE MEMORY
+	free_map(&map);
+
 	return (0);
 }
 
