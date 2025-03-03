@@ -6,7 +6,7 @@
 /*   By: jdorazio <jdorazio@student.42.madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 14:15:39 by jdorazio          #+#    #+#             */
-/*   Updated: 2025/02/14 17:10:28 by jdorazio         ###   ########.fr       */
+/*   Updated: 2025/03/03 21:21:06 by jdorazio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # include "libft/libft.h"
 # include "printf/ft_printf.h"
 # include "get_next_line/get_next_line.h"
-# include "minilibx/mlx.h"
+# include "minilibx-linux/mlx.h"
 # include "keybindings.h"
 
 // Medidas de la interfaz
@@ -61,23 +61,21 @@ typedef struct t_delta
 	int	sign_y;
 }	t_delta;
 
-
-
 typedef struct	s_image {
 	void	*img;
 	char	*addr;
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
-}			t_image;
+}		t_image;
 
 
 typedef struct s_display
 {
 	void	*mlx;
 	void	*win;
-	t_image	img;
-	t_map	map;
+	t_image	*img;
+	t_map	*map;
 	float	zoom;
 	float	rot_x;
 	float	rot_y;
@@ -105,23 +103,20 @@ int	ft_is_sign(char c);
 
 // #----------# MAP INIT #----------#
 void	load_map(char *file, t_map *map);
-void	fill_matrix(int fd, t_map *map);
 void	map_init(char *file, t_map *map);
-void	map_dimensions(char *file, t_map *map);
+int		map_dimensions(char *file, t_map *map);
+int		fill_matrix(int fd, t_map *map);
 void	z_values(t_map *map);
 
 // #----------# MAP INIT UTILS #----------#
-void	vertical_dim(char *file, t_map *map);
-void	horizontal_dim(int fd, t_map *map);
-char	*clear_line(int fd);
-
+int		vertical_dim(char *file, t_map *map);
+int		horizontal_dim(int fd, t_map *map);
+char	*trim_newline(int fd);
 
 // #----------# START #----------#
-int	system_init(t_map *map);
-int	init_display_mlx(t_map *map, t_display *mlx);
-
-
-
+void	system_init(t_map *map);
+int	set_display_default(t_display *mlx, t_map *map);
+int		init_display_mlx(t_display *mlx);
 
 // #----------# PROJECTION #----------#
 void	draw_map(t_display *mlx);
@@ -129,21 +124,23 @@ void	bresenham_line(t_display *mlx, t_point p1, t_point p2);
 void	init_bresenham_line(t_point *p1, t_point *p2, t_delta *delta);
 t_point	create_point(int x, int y, t_display *mlx);
 void	isometric(t_point *p, t_display *mlx);
-void	put_pixel(t_image *img, int x, int y, int color);
+void	put_pixel(t_display *mlx, int x, int y, int color);
 void	rot_x(t_point *p, float angle);
 void	rot_z(t_point *p, float angle);
-
 
 // #----------# KEY EVENT #----------#
 int		key_hook(int keycode, t_display *mlx);
 int		free_close(t_display *mlx);
 void	free_display(t_display *mlx);
 void	free_map(t_map *map);
+void	free_array(char **arr);
 
 // #----------# SIDEBAR #----------#
 void	draw_sidebar(t_display *mlx);
 void	sidebar_description(t_display *mlx);
 void	update_rot(int keycode, t_display *mlx);
 
+
+void	free_mlx_map(t_display *mlx);
+
 #endif
-	
