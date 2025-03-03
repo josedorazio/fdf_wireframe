@@ -6,7 +6,7 @@
 /*   By: jdorazio <jdorazio@student.42.madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 14:17:04 by jdorazio          #+#    #+#             */
-/*   Updated: 2025/02/26 18:50:01 by jdorazio         ###   ########.fr       */
+/*   Updated: 2025/02/26 19:31:23 by jdorazio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ int	main(int ac, char **av)
 
 	// FREE MEMORY
 	free_map(&map);
-
 	return (0);
 }
 

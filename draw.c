@@ -6,7 +6,7 @@
 /*   By: jdorazio <jdorazio@student.42.madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 19:56:28 by jdorazio          #+#    #+#             */
-/*   Updated: 2025/02/14 17:10:01 by jdorazio         ###   ########.fr       */
+/*   Updated: 2025/03/03 19:53:31 by jdorazio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,18 @@ void	draw_map(t_display *mlx)
 	int	x;
 	int	y;
 
+	ft_bzero(mlx->img->addr, WIDTH * HEIGHT * (mlx->img->bits_per_pixel / 8));
 	ft_printf("Drawing map...\n");
 	y = 0;
-	while (y < mlx->map.height)
+	while (y < mlx->map->height)
 	{
 		x = 0;
-		while (x < mlx->map.width[y])
+		while (x < mlx->map->width[y])
 		{
-			if (x < mlx->map.width[y] - 1)
+			if (x < mlx->map->width[y] - 1)
 				bresenham_line(mlx, create_point(x, y, mlx),
 					create_point(x + 1, y, mlx));
-			if (y < mlx->map.height - 1)
+			if (y < mlx->map->height - 1)
 				bresenham_line(mlx, create_point(x, y, mlx),
 					create_point(x, y + 1, mlx));
 			x++;
@@ -37,7 +38,7 @@ void	draw_map(t_display *mlx)
 	}
 	ft_printf("Drawing Complete. Updating Window...\n");
 	draw_sidebar(mlx);
-	mlx_put_image_to_window(mlx->mlx,  mlx->win, mlx->img.img, 0 ,0);
+	mlx_put_image_to_window(mlx->mlx,  mlx->win, mlx->img->img, 0 ,0);
 	sidebar_description(mlx);
 }
 
@@ -70,7 +71,7 @@ void	bresenham_line(t_display *mlx, t_point p1, t_point p2)
 	err = delta.dx - delta.dy;
 	while (p1.sx != p2.sx || p1.sy != p2.sy)
 	{
-		put_pixel(&mlx->img, p1.sx, p1.sy, 0xFFFFFF);
+		put_pixel(mlx, p1.sx, p1.sy, 0xFFFFFF);
 		err2 = 2 * err;
 		if (err2 > -delta.dy)
 		{
@@ -85,15 +86,14 @@ void	bresenham_line(t_display *mlx, t_point p1, t_point p2)
 	}
 }
 
-void	put_pixel(t_image *img, int x, int y, int color)
+void	put_pixel(t_display *mlx, int x, int y, int color)
 {
-	char	*dst;
+	int	pixel;
 
-	if (x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT) // Prevent segmentation faults
-	{
-		dst = img->addr + (y * img->line_length + x * (img->bits_per_pixel / 8));
-		*(unsigned int*)dst = color;
-	}
+	if (x >= WIDTH || x < 0 || y <0 || y >= HEIGHT)
+		return ;
+	pixel = (y * mlx->img->line_length) + (x * (mlx->img->bits_per_pixel / 8));
+	*(unsigned int *)(mlx->img->addr + pixel) = color;	
 }
 
 
@@ -103,8 +103,7 @@ t_point	create_point(int x, int y, t_display *mlx)
 
 	point.x = x;
 	point.y = y;
-	point.z = mlx->map.matrix[y][x];
-//	mlx->angle = M_PI  /4; // ANGLE DEFAULT 45
+	point.z = mlx->map->matrix[y][x];
 	isometric(&point, mlx);
 	return (point);
 

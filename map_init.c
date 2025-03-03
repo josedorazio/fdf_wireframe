@@ -6,52 +6,72 @@
 /*   By: jdorazio <jdorazio@student.42.madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 13:48:39 by jdorazio          #+#    #+#             */
-/*   Updated: 2025/02/12 18:57:23 by jdorazio         ###   ########.fr       */
+/*   Updated: 2025/03/03 21:31:58 by jdorazio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "fdf.h"
 
-void	map_dimensions(char *file, t_map *map)
-{
-	int		fd;
-
-	vertical_dim(file, map);
-	map->width = malloc(map->height * sizeof(int));
-	if (!map->width)
-		terminate(4, map);
-	fd = open(file, O_RDONLY);
-	if (fd < 0)
-			terminate(3, file);
-	horizontal_dim(fd, map);
-	close (fd);
-}
-
-
 void	map_init(char *file, t_map *map)
 {
 	int		i;
-	int		fd;
-	
-	fd = open(file, O_RDONLY);
-	if (fd < 0)
-		terminate(3, file);
-	map_dimensions(file, map);
-	close (fd);
-	map->matrix = (int **)ft_calloc(map->height, sizeof(int *));
+
+	if (map_dimensions(file, map) == 1)
+	{
+		free(map->width);
+		exit(EXIT_FAILURE);
+	}
+	map->matrix = malloc(map->height * sizeof(int *));
 	if (!map->matrix)
-		terminate(4, map);
+	{
+		free(map->width);
+		exit(EXIT_FAILURE);
+	}
 	i = 0;
 	while (i < map->height)
 	{
 		map->matrix[i] = ft_calloc(map->width[i], sizeof(int));
 		if (!map->matrix[i])
-			terminate(4, map);
+		{
+			while (i > 0)
+				free(map->matrix[--i]);
+			free(map->matrix);
+			free(map->width);
+			exit(EXIT_FAILURE);
+		}
 		i++;
 	}
 }
 
-void	fill_matrix(int fd, t_map *map)
+int	map_dimensions(char *file, t_map *map)
+{
+	int	fd;
+
+
+	if (vertical_dim(file, map) == 1)
+		return (1);
+	if (map->height <= 0)
+		return (1);
+	map->width = malloc(map->height * sizeof(int));
+	if (!map->width)
+		return (1);
+	fd = open(file, O_RDONLY);
+	if (fd < 0)
+	{
+		free(map->width);
+		return (1);
+	}
+	if(horizontal_dim(fd, map) == 1)
+	{
+		free(map->width);
+		close (fd);
+		return (1);
+	}
+	close (fd);
+	return (0);
+}
+
+int	fill_matrix(int fd, t_map *map)
 {
 	char	*line;
 	char	**arr;
@@ -63,38 +83,21 @@ void	fill_matrix(int fd, t_map *map)
 	{
 		line = get_next_line(fd);
 		if (!line)
-			break;
+			return (1);
 		arr = ft_split(line, ' ');
 		free(line);
+		if (!arr)
+			return (1);
 		j = 0;
 		while (j < map->width[i] && arr[j] != NULL)
 		{
 			map->matrix[i][j] = convert(arr[j]);
-			free(arr[j]);
 			j++;
 		}
-		free(arr);
+		free_array(arr);
 		i++;
 	}
-}
-
-void	load_map(char *file, t_map *map)
-{
-	int		fd;
-
-	// ## FALTA AGREGAR UN CONTROL DE SI EL ARCHIVO ES .FDF
-
-	// ------------------------- //
-	map_init(file, map);
-	// USE TERMINATE FUNCTION FOR ERROR HANDLING
-	fd = open(file, O_RDONLY);
-	if (fd < 0)
-		terminate(3, file);
-	fill_matrix(fd, map);
-	close(fd);
-	map->z_min = INT_MAX;
-	map->z_max = INT_MIN;
-	z_values(map);
+	return (0);
 }
 
 void	z_values(t_map *map)
@@ -116,4 +119,28 @@ void	z_values(t_map *map)
 		}
 		y++;
 	}
+}
+
+void	load_map(char *file, t_map *map)
+{
+	int		fd;
+
+	// ## FALTA AGREGAR UN CONTROL DE SI EL ARCHIVO ES .FDF
+
+	// ------------------------- //
+	map = NULL;
+	map_init(file, map);
+	// USE TERMINATE FUNCTION FOR ERROR HANDLING
+	fd = open(file, O_RDONLY);
+	if (fd < 0)
+		exit(EXIT_FAILURE);
+	if (fill_matrix(fd, map) == 1)
+	{
+		free(map->width);
+		exit(EXIT_FAILURE);
+	}
+	close(fd);
+	map->z_min = INT_MAX;
+	map->z_max = INT_MIN;
+	z_values(map);
 }

@@ -6,48 +6,68 @@
 /*   By: jdorazio <jdorazio@student.42.madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 14:50:21 by jdorazio          #+#    #+#             */
-/*   Updated: 2025/02/14 09:19:56 by jdorazio         ###   ########.fr       */
+/*   Updated: 2025/03/03 21:36:20 by jdorazio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int	init_display_mlx(t_map *map, t_display *mlx)
+int	init_display_mlx(t_display *mlx)
 {
-	mlx->map = *map;
 	mlx->mlx = mlx_init();
-	if (!mlx->mlx)
-		return (1);
-	mlx->img.img = mlx_new_image(mlx->mlx, WIDTH, HEIGHT);
-	if (!mlx->img.img)
-		return (1);
-	printf("img.img works\n");
+	mlx->img = (t_image *)ft_calloc(1, sizeof(t_image));  // or a similar initialization
+
+	mlx->img->img = mlx_new_image(mlx->mlx, WIDTH, HEIGHT);
+	mlx->img->addr = mlx_get_data_addr(mlx->img->img, &mlx->img->bits_per_pixel,
+			&mlx->img->line_length, &mlx->img->endian);
+	printf("MLX->WIN START\n");
 	mlx->win = mlx_new_window(mlx->mlx, WIDTH, HEIGHT, "FDF - Wireframe");
-	if (!mlx->win)
-		return (1);
-	printf("img.win works\n");
-	mlx->img.addr = mlx_get_data_addr(mlx->img.img, &mlx->img.bits_per_pixel,
-			&mlx->img.line_length, &mlx->img.endian);
-	if (!mlx->img.addr)
-		return (1);
-	printf("img.addr works\n");
+	printf("MLX->XIN NO ERROR \n");
 	return (0);
 }
 
-int	system_init(t_map *map)
+int	set_display_default(t_display *mlx, t_map *map)
+{
+
+	mlx->map = map;
+	mlx->zoom = 1.0;
+	mlx->rot_x = 0.0;
+	mlx->rot_y = 0.0;
+	mlx->rot_z = 0.0;
+	mlx->angle = 45.0; //cambiar
+	return (0);
+}
+
+void	system_init(t_map *map)
 {
 	t_display	*mlx;
 
 	ft_printf("Initializing Minilibx...\n");
-	mlx = ft_calloc(1, sizeof(t_display));
+	mlx = (t_display *)ft_calloc(1, sizeof(t_display));
 	if (!mlx)
-		terminate(6, mlx);
-	mlx->zoom = 1;
-	if (init_display_mlx(map, mlx))
-		terminate(6, mlx);
+	{
+		printf("MLX failed in system init\n\n");
+		exit(EXIT_FAILURE);
+	}
+	if (set_display_default(mlx, map) == 1)
+	{
+		free_mlx_map(mlx);
+		free_map(map);
+		printf("ERROR SETTING\n");
+		exit(EXIT_FAILURE);
+	}
+	printf("Starting Init Display MLX\n");
+	if (init_display_mlx(mlx) == 1)
+	{
+		free_mlx_map(mlx);
+		free_map(map);
+		printf("INIT DISPLAY_MLX(MLX) freeing correctly\n");
+		exit(EXIT_FAILURE);
+	}
 	mlx_hook(mlx->win, KP, (1L<<0), key_hook, mlx);
 	mlx_hook(mlx->win, DN, (1L<<17), free_close, mlx);
 	draw_map(mlx);
 	mlx_loop(mlx->mlx);
-	return (EXIT_SUCCESS);
+	free_mlx_map(mlx);
+	free(mlx);
 }
