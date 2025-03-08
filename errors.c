@@ -6,7 +6,7 @@
 /*   By: jdorazio <jdorazio@student.42.madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 13:49:11 by jdorazio          #+#    #+#             */
-/*   Updated: 2025/02/12 19:02:03 by jdorazio         ###   ########.fr       */
+/*   Updated: 2025/03/08 12:51:36 by jdorazio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,11 @@
 int	terminate(int error_code, void *ptr)
 {
 	if (error_code == 1) // missing inputs
-		ft_printf("NOT ENOUGH INPUTS\n"); //not an fdf file
+		ft_printf("ERROR: Insert 1 file with '.fdf' extension. \n"); //not an fdf file
 	else if (error_code == 2)
-		ft_printf("NOT AN .fdf file\n");
+		ft_printf("ERROR: File doesn't exist.\n");
+	else if (error_code == 31)
+		ft_printf("ERROR: Invalid map\n");
 	else if (error_code == 3)
 		// FAILS TO REED FILE
 		free(ptr);

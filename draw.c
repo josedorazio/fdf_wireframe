@@ -6,7 +6,7 @@
 /*   By: jdorazio <jdorazio@student.42.madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 19:56:28 by jdorazio          #+#    #+#             */
-/*   Updated: 2025/03/03 19:53:31 by jdorazio         ###   ########.fr       */
+/*   Updated: 2025/03/08 12:58:35 by jdorazio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ void	draw_map(t_display *mlx)
 	while (y < mlx->map->height)
 	{
 		x = 0;
-		while (x < mlx->map->width[y])
+		while (x < mlx->map->width)
 		{
-			if (x < mlx->map->width[y] - 1)
+			if (x < mlx->map->width - 1)
 				bresenham_line(mlx, create_point(x, y, mlx),
 					create_point(x + 1, y, mlx));
 			if (y < mlx->map->height - 1)
