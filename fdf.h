@@ -6,7 +6,7 @@
 /*   By: jdorazio <jdorazio@student.42.madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 14:15:39 by jdorazio          #+#    #+#             */
-/*   Updated: 2025/03/03 21:21:06 by jdorazio         ###   ########.fr       */
+/*   Updated: 2025/03/08 13:11:31 by jdorazio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # include "libft/libft.h"
 # include "printf/ft_printf.h"
 # include "get_next_line/get_next_line.h"
-# include "minilibx-linux/mlx.h"
+# include "minilibx/mlx.h"
 # include "keybindings.h"
 
 // Medidas de la interfaz
@@ -36,7 +36,8 @@
 typedef struct s_map
 {
 	int	height;
-	int	*width;
+	int	width;
+	int	color;
 	int	**matrix;
 	int	z_max;
 	int	z_min;
@@ -84,6 +85,46 @@ typedef struct s_display
 }	t_display;
 
 
+// typedef struct s_point
+// {
+//     int x;         // Coordenada x
+//     int y;         // Coordenada y
+//     int z;         // Coordenada z (altura)
+//     int color;     // Color del punto
+//     int sx;        // Coordenada proyectada en pantalla (x)
+//     int sy;        // Coordenada proyectada en pantalla (y)
+//     int dx;        // Diferencia x para trazado de líneas
+//     int dy;        // Diferencia y para trazado de líneas
+//     int sign_x;    // Dirección en x
+//     int sign_y;    // Dirección en y
+// } t_point;
+
+// typedef struct s_map
+// {
+//     int      height;   // Número de filas en el mapa
+//     int      width;    // Número de columnas en el mapa
+//     t_point  **matrix; // Matriz 2D de puntos
+//     int      z_max;    // Máxima altura
+//     int      z_min;    // Mínima altura
+// } t_map;
+
+// typedef struct s_display
+// {
+//     void    *mlx;            // Referencia al contexto de MLX
+//     void    *win;            // Referencia a la ventana de MLX
+//     void    *img;            // Imagen renderizada (MLX)
+//     char    *addr;           // Dirección de memoria para la imagen
+//     int     bits_per_pixel;  // Bits por píxel
+//     int     line_length;     // Tamaño de cada fila de la imagen
+//     int     endian;          // Orden de los bytes
+//     t_map   *map;            // Mapa asociado
+//     float   zoom;            // Nivel de zoom
+//     float   rot_x;           // Rotación en el eje X
+//     float   rot_y;           // Rotación en el eje Y
+//     float   rot_z;           // Rotación en el eje Z
+// } t_display;
+
+
 
 
 // MAIN FILE
@@ -103,14 +144,16 @@ int	ft_is_sign(char c);
 
 // #----------# MAP INIT #----------#
 void	load_map(char *file, t_map *map);
-void	map_init(char *file, t_map *map);
+int		map_init(char *file, t_map *map);
 int		map_dimensions(char *file, t_map *map);
 int		fill_matrix(int fd, t_map *map);
 void	z_values(t_map *map);
 
 // #----------# MAP INIT UTILS #----------#
-int		vertical_dim(char *file, t_map *map);
+int		get_height(char *file, t_map *map);
 int		horizontal_dim(int fd, t_map *map);
+int		get_width(char *file, t_map *map);
+
 char	*trim_newline(int fd);
 
 // #----------# START #----------#
