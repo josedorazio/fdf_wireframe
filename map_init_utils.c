@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_init_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdorazio <jdorazio@student.42.madrid.co    +#+  +:+       +#+        */
+/*   By: jdorazio <jdorazio@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 14:05:50 by jdorazio          #+#    #+#             */
-/*   Updated: 2025/03/08 12:56:58 by jdorazio         ###   ########.fr       */
+/*   Updated: 2025/03/08 16:20:13 by jdorazio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,4 +78,37 @@ int	get_width(char *file, t_map *map)
 	}
 	close(fd);
 	return (0);
+}
+
+void	z_values(t_map *map)
+{
+	int	y;
+	int	x;
+
+	y = 0;
+	while (y < map->height)
+	{
+		x = 0;
+		while (x < map->width)
+		{
+			if (map->matrix[y][x] < map->z_min)
+				map->z_min = map->matrix[y][x];
+			else if (map->matrix[y][x] > map->z_max)
+				map->z_max = map->matrix[y][x];
+			x++;
+		}
+		y++;
+	}
+}
+
+int	check_extension(char *file)
+{
+	char	*extension;
+
+	extension = ft_strrchr(file, '.');
+	if (!extension)
+		return (1);
+	if (extension && ft_strncmp(extension, ".fdf", 5) == 0)
+		return (0);
+	return (1);
 }

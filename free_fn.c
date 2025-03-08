@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_fn.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdorazio <jdorazio@student.42.madrid.co    +#+  +:+       +#+        */
+/*   By: jdorazio <jdorazio@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 23:25:46 by jdorazio          #+#    #+#             */
-/*   Updated: 2025/03/08 12:53:18 by jdorazio         ###   ########.fr       */
+/*   Updated: 2025/03/08 16:37:20 by jdorazio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int	free_close(t_display *mlx)
     return (0);  // Return 0 to avoid compiler warnings
 }
 
+/*FUNCTION WAS CHANGED FOR FILL_MATRIX -> THIS MIGHT LEAD TO OTHER CHANGES*/
 void	free_map(t_map *map)
 {
 	int	y;
@@ -28,9 +29,13 @@ void	free_map(t_map *map)
 	while (y < map->height)
 		{
 			free(map->matrix[y]);
+			if (map->color)
+				free(map->color[y]);
 			y++;
 		}
 	free(map->matrix);
+	if (map->color)
+		free(map->color);
 	ft_printf("Map freed\n");
 }
 
@@ -65,4 +70,5 @@ void	free_mlx_map(t_display *mlx)
 	if (mlx->img)
 		free(mlx->img);
 	free(mlx);
+	ft_printf("Freed Display\n");
 }

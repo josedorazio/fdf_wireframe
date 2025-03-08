@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdorazio <jdorazio@student.42.madrid.co    +#+  +:+       +#+        */
+/*   By: jdorazio <jdorazio@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 13:49:11 by jdorazio          #+#    #+#             */
-/*   Updated: 2025/03/08 12:51:36 by jdorazio         ###   ########.fr       */
+/*   Updated: 2025/03/08 16:38:42 by jdorazio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,16 @@ int	terminate(int error_code, void *ptr)
 		ft_printf("ERROR: File doesn't exist.\n");
 	else if (error_code == 31)
 		ft_printf("ERROR: Invalid map\n");
-	else if (error_code == 3)
-		// FAILS TO REED FILE
+	else if(error_code == 33)
+		ft_printf("ERROR: Allocation\n");
+	else if (error_code == 3 || error_code == 5)
+	{
+		ft_printf("ERROR: File contains invalid data\n");
 		free(ptr);
+	}
 	else if (error_code == 4)  // Free maps
 		free_map(ptr);
-	else if (error_code == 5)
-		free(ptr);
+
 	else if (error_code == 6)
 		free_close(ptr);
 	else if (error_code == 7)
@@ -34,7 +37,7 @@ int	terminate(int error_code, void *ptr)
 	exit(EXIT_FAILURE);
 }
 
-/* me falta un free para fd, que en realidad 
+/* me falta un free para fd, que en realidad
 lo que liberaria es FILE
 
 */

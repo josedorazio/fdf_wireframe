@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   map_init.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdorazio <jdorazio@student.42.madrid.co    +#+  +:+       +#+        */
+/*   By: jdorazio <jdorazio@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 13:48:39 by jdorazio          #+#    #+#             */
-/*   Updated: 2025/03/08 13:37:14 by jdorazio         ###   ########.fr       */
+/*   Updated: 2025/03/08 16:24:40 by jdorazio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "fdf.h"
+#include "fdf.h"
 
 int	map_init(char *file, t_map *map)
 {
@@ -21,31 +21,39 @@ int	map_init(char *file, t_map *map)
 	map->z_min = INT_MAX;
 	if (get_height(file, map))
 		return (1);
-	printf("Map Height %d\n", map->height);
 	if (get_width(file, map))
 		return (1);
-	printf("Map Width %d\n", map->width);
+	map->matrix = malloc(map->height * sizeof(int *));
+	map->color = malloc(map->height * sizeof(int *));
+	if (!map->matrix || !map->color)
+		return (1);
 	return (0);
 }
 
-void	z_values(t_map *map)
+int	init_matrix(t_map *map)
 {
-	int	y;
-	int	x;
- 	y = 0;
-	while (y < map->height)
+	int	i;
+
+	i = 0;
+	while (i < map->height)
 	{
-		x = 0;
-		while (x < map->width)
+		map->matrix[i] = malloc(map->width * sizeof(int));
+		map->color[i] = malloc(map->width * sizeof(int));
+		if (!map->matrix[i] || !map->color[i])
 		{
-			if (map->matrix[y][x] < map->z_min)
-				map->z_min = map->matrix[y][x];
-			else if (map->matrix[y][x] > map->z_max)
-				map->z_max = map->matrix[y][x];
-			x++;
+			while (i >= 0) // Free previous allocations before returning
+			{
+				free(map->matrix[i]);
+				free(map->color[i]);
+				i--;
+			}
+			free(map->matrix);
+			free(map->color);
+			return (1);
 		}
-		y++;
+		i++;
 	}
+	return (0);
 }
 
 int	fill_matrix(int fd, t_map *map)
@@ -55,8 +63,8 @@ int	fill_matrix(int fd, t_map *map)
 	int		i;
 	int		j;
 
-	i = 0;
-	while (i < map->height)
+	i = -1;
+	while (++i < map->height)
 	{
 		line = get_next_line(fd);
 		if (!line)
@@ -65,38 +73,43 @@ int	fill_matrix(int fd, t_map *map)
 		free(line);
 		if (!arr)
 			return (1);
-		j = 0;
-		map->matrix[i] = malloc(map->width * sizeof(int));
-		while (j < map->width && arr[j] != NULL)
-		{
-			map->matrix[i][j] = convert(arr[j]);
-			j++;
-		}
+		j = -1;
+		while (++j < map->width)
+			convert(arr[j], &map->matrix[i][j], &map->color[i][j]);
 		free_array(arr);
-		i++;
 	}
 	return (0);
 }
+
 
 
 void	load_map(char *file, t_map *map)
 {
 	int		fd;
 
-	// ## FALTA AGREGAR UN CONTROL DE SI EL ARCHIVO ES .FDF
-
+	if (check_extension(file))
+		terminate(1, NULL);
 	if (map_init(file, map))
-	terminate(31, NULL);
+		terminate(31, NULL);
+	if (init_matrix(map))
+		terminate(33, NULL);
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
-	terminate(2, NULL);
-	map->matrix = malloc(map->height * sizeof(int *));
-	if (!map->matrix)
-		exit(EXIT_FAILURE);
+		terminate(2, NULL);
 	if (fill_matrix(fd, map) == 1)
 	{
-		printf("failed to create matrix\n");
+		printf("Failed to create matrix\n");
+		// Free all allocated memory before exiting
+		for (int i = 0; i < map->height; i++)
+		{
+			free(map->matrix[i]);
+			free(map->color[i]);
+		}
+		close(fd);
+		free(map->matrix);
+		free(map->color);
 		exit(EXIT_FAILURE);
 	}
-	z_values(map);	
+	close(fd);
+	z_values(map);
 }

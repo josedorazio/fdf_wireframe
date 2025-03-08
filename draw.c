@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdorazio <jdorazio@student.42.madrid.co    +#+  +:+       +#+        */
+/*   By: jdorazio <jdorazio@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 19:56:28 by jdorazio          #+#    #+#             */
-/*   Updated: 2025/03/08 12:58:35 by jdorazio         ###   ########.fr       */
+/*   Updated: 2025/03/08 17:13:18 by jdorazio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,12 +60,16 @@ void	init_bresenham_line(t_point *p1, t_point *p2, t_delta *delta)
 	delta->sign_y = y_sign;
 }
 
+/*
+	I STILL HAVE TO ADD A FUNCTIONALITY FOR COLOR INPUT
 
+*/
 void	bresenham_line(t_display *mlx, t_point p1, t_point p2)
 {
 	t_delta	delta;
 	int		err;
 	int		err2;
+	int		color;
 
 	init_bresenham_line(&p1, &p2, &delta);
 	err = delta.dx - delta.dy;
@@ -93,7 +97,7 @@ void	put_pixel(t_display *mlx, int x, int y, int color)
 	if (x >= WIDTH || x < 0 || y <0 || y >= HEIGHT)
 		return ;
 	pixel = (y * mlx->img->line_length) + (x * (mlx->img->bits_per_pixel / 8));
-	*(unsigned int *)(mlx->img->addr + pixel) = color;	
+	*(unsigned int *)(mlx->img->addr + pixel) = color;
 }
 
 
@@ -104,6 +108,7 @@ t_point	create_point(int x, int y, t_display *mlx)
 	point.x = x;
 	point.y = y;
 	point.z = mlx->map->matrix[y][x];
+	point.color = mlx->map->color[y][x];
 	isometric(&point, mlx);
 	return (point);
 
@@ -113,7 +118,7 @@ void	isometric(t_point *p, t_display *mlx)
 {
 	int x_offset;
 	int y_offset;
-	
+
 	x_offset = WIDTH / 2;
 	y_offset= HEIGHT / 2;
 	p->x = p->x * mlx->zoom * ZOOM;
