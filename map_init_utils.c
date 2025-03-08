@@ -6,19 +6,18 @@
 /*   By: jdorazio <jdorazio@student.42.madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 14:05:50 by jdorazio          #+#    #+#             */
-/*   Updated: 2025/02/26 18:46:47 by jdorazio         ###   ########.fr       */
+/*   Updated: 2025/03/08 12:56:58 by jdorazio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "fdf.h"
 
-int	vertical_dim(char *file, t_map *map)
+int	get_height(char *file, t_map *map)
 {
 	int		fd;
 	char	*line;
 
-	fd = open(file, O_RDONLY);
-	if (fd < 0)
+	if ((fd = open(file, O_RDONLY) )< 0)
 		return (1);
 	map->height = 0;
 	while ((line = get_next_line(fd)) != NULL)
@@ -30,43 +29,53 @@ int	vertical_dim(char *file, t_map *map)
 	return (0);
 }
 
-char *trim_newline(int fd)
+int	data_counter(char *line)
 {
-	char	*line;
-	int		len;
+	int	count;
+	int	i;
 
-	line = get_next_line(fd);
-	if (!line)
-		return (NULL);
-	len = ft_strlen(line);
-	while (len > 0 && (line[len - 1] == '\n' || line[len - 1] == '\r'))
-		line[--len] = '\0';
-	return (line);
+	count = 0;
+	i = 0;
+	while (line[i]) {
+		// Saltar espacios iniciales
+		while (line[i] && line[i] == ' ')
+			i++;
+		// Contar palabras
+		if (line[i] && line[i] != ' ') {
+			count++;
+			// Saltar caracteres de la palabra actual
+			while (line[i] && line[i] != ' ')
+				i++;
+		}
+	}
+	return count;
 }
 
-int	horizontal_dim(int fd, t_map *map)
+int	get_width(char *file, t_map *map)
 {
 	char	*line;
-	char	**arr;
-	int		cols;
-	int		i;
+	int		curr;
+	int		prev;
+	int		fd;
 
-	i = 0;
-	while (i < map->height)
+	prev = 0;
+	if ((fd = open(file, O_RDONLY)) < 0)
+		return (1);
+	line = get_next_line(fd);
+	while (line)
 	{
-		cols = 0;
-		line = trim_newline(fd);
-		if (!line)
+		curr = data_counter(line);
+		if (prev != 0 && curr != prev)
+		{
+			free(line);
+			close(fd);
 			return (1);
-		arr = ft_split(line, ' ');
+		}
+		map->width = curr;
+		prev = curr;
 		free(line);
-		if (!arr)
-			return (1);
-		while (arr[cols] && (arr[cols][0] != '\0' || arr[cols][0] != '\r'))
-			cols++;
-		map->width[i] = cols;
-		free_array(arr);
-		i++;
+		line = get_next_line(fd);
 	}
+	close(fd);
 	return (0);
 }

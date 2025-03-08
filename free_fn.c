@@ -6,7 +6,7 @@
 /*   By: jdorazio <jdorazio@student.42.madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 23:25:46 by jdorazio          #+#    #+#             */
-/*   Updated: 2025/03/03 21:04:52 by jdorazio         ###   ########.fr       */
+/*   Updated: 2025/03/08 12:53:18 by jdorazio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ void	free_map(t_map *map)
 			y++;
 		}
 	free(map->matrix);
-	free(map->width);
 	ft_printf("Map freed\n");
 }
 
