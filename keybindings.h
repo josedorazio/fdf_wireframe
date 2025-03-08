@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   keybindings.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdorazio <jdorazio@student.42.madrid.co    +#+  +:+       +#+        */
+/*   By: jdorazio <jdorazio@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 22:38:37 by jdorazio          #+#    #+#             */
-/*   Updated: 2025/02/14 17:29:08 by jdorazio         ###   ########.fr       */
+/*   Updated: 2025/03/08 14:44:23 by jdorazio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef KEY_BINDING_H
-# define KEY_BINDING
+# define KEY_BINDING_H
 
 
 /* EVENTOS*/
@@ -66,6 +66,6 @@
 # define KEY_DOWN    65364
 # define KEY_UP      65362
 # define KEY_CTRL    65507
-# define KEY_CMD     65515 
+# define KEY_CMD     65515
 
 #endif
