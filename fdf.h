@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdorazio <jdorazio@student.42.madrid.co    +#+  +:+       +#+        */
+/*   By: jdorazio <jdorazio@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 14:15:39 by jdorazio          #+#    #+#             */
-/*   Updated: 2025/03/09 23:51:29 by jdorazio         ###   ########.fr       */
+/*   Updated: 2025/03/10 19:56:31 by jdorazio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 # define HEIGHT 1080
 # define SIDEBAR 350
 # define M_PI 3.14159265358979323846
-# define ANGLE 0.523599 
+# define ANGLE 0.523599
 
 typedef struct s_map
 {
@@ -68,8 +68,6 @@ typedef struct	s_image {
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
-	int		height;
-	int		width;
 }		t_image;
 
 
@@ -146,5 +144,9 @@ void	update_rot(int keycode, t_display *mlx);
 
 
 void	free_mlx_map(t_display *mlx);
+
+// #----------# SIDEBAR #----------#
+int	get_color(int z, t_display *map);
+int interpolate_color(int start_color, int end_color, float factor);
 
 #endif
