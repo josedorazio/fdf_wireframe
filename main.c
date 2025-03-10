@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdorazio <jdorazio@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: jdorazio <jdorazio@student.42.madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 14:17:04 by jdorazio          #+#    #+#             */
-/*   Updated: 2025/03/08 16:31:39 by jdorazio         ###   ########.fr       */
+/*   Updated: 2025/03/09 20:39:42 by jdorazio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 int	main(int ac, char **av)
 {
 	t_map	map;
-
 
 	if (ac != 2)
 		terminate(1, NULL);

@@ -6,7 +6,7 @@
 /*   By: jdorazio <jdorazio@student.42.madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 22:57:25 by jdorazio          #+#    #+#             */
-/*   Updated: 2025/02/26 22:54:05 by jdorazio         ###   ########.fr       */
+/*   Updated: 2025/03/09 23:31:58 by jdorazio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ int	key_hook(int keycode, t_display *mlx)
 		mlx->zoom *= 1.1;
 	else if (keycode == KEY_MINUS || keycode == KEY_MINUS2)
 		mlx->zoom /= 1.1;
-	if (keycode == KEY_LEFT || keycode == KEY_RIGHT
-		|| keycode == KEY_UP || keycode == KEY_DOWN)
+	if (keycode == KEY_1 || keycode == KEY_2
+		|| keycode == KEY_3 || keycode == KEY_4)
 		update_rot(keycode, mlx);
 	/* --------------------- */
 	/* Borrar imagen anterior y redibujar */
@@ -49,12 +49,17 @@ int	mouse_hook(int button, t_display *mlx)
 
 void	update_rot(int keycode, t_display *mlx)
 {
-	if (keycode == KEY_LEFT)
-		mlx->rot_x -= (5 * M_PI / 180);
-	else if (keycode == KEY_RIGHT)
-		mlx->rot_x += (5 * M_PI / 180);
-	else if (keycode == KEY_UP)
-		mlx->rot_z -= (5 * M_PI / 180);
+	if (keycode == KEY_1)
+		mlx->rot_x -= (2 * M_PI / 180);
+	else if (keycode == KEY_2)
+		mlx->rot_x += (2 * M_PI / 180);
+	else if (keycode == KEY_3)
+		mlx->rot_z -= (2 * M_PI / 180);
 	else
-		mlx->rot_z += (5 * M_PI / 180);
+		mlx->rot_z += (2 * M_PI / 180);
 }
+
+// void	translate(int keycode, t_display *mlx)
+// {
+
+// }

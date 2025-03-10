@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validate.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdorazio <jdorazio@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: jdorazio <jdorazio@student.42.madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 14:37:22 by jdorazio          #+#    #+#             */
-/*   Updated: 2025/03/08 15:59:44 by jdorazio         ###   ########.fr       */
+/*   Updated: 2025/03/09 20:42:55 by jdorazio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,31 +39,31 @@ int	validate(char *num)
 	return (1);
 }
 
-int	hexa(char *str)
+
+int	ft_atoi_base(char *color_str)
 {
 	int	i;
 	int	result;
+	char	c;
 
-	result = 0;
 	i = 0;
-	if (!str)
+	result = 0;
+	if (!color_str)
 		return (0xFFFFFF);
-	if (str[0] == '0' && (str[1] == 'x' || str[1] == 'X'))
+	if (color_str[0] == '0' && (color_str[1] == 'x' || color_str[1] == 'X'))
 		i = 2;
-	while (str[i])
+	while (color_str[i])
 	{
-		result *= 16;
-		if (str[i] >= '0' && str[i]  <= '9')
-			result += str[i] - '0';
-		else if (str[i] >= 'A' && str[i] <= 'F')
-			result += str[i] - 'A' + 10;
-		else if (str[i] >= 'a' && str[i] <= 'f')
-			result += str[i] - 'a' + 10;
+		c = ft_tolower(color_str[i]);
+		if (c >= '0' && c <= '9')
+			result = (result * 16) + (c - '0');
+		else if (c >= 'a' && c <= 'f')
+			result = (result * 16) + (c - 'a' +  10);
 		else
-			return (0xFFFFFF);
+			break;
+		i++;
 	}
 	return (result);
-
 }
 
 void	convert(char *str, int *z, int *color)
@@ -72,12 +72,12 @@ void	convert(char *str, int *z, int *color)
 
 	input = ft_split(str, ',');
 	if (!input || !input[0])
-		terminate(1, NULL); // CAMBIAR LUEGO
+		terminate(1, NULL);
 	if (!validate(input[0]))
 		terminate(1, NULL);// CAMBIAR LUEGO
 	*z = ft_atoi(input[0]);
 	if (input[1])
-		*color = hexa(input[1]);
+		*color = ft_atoi_base(input[1]);
 	else
 		*color = 0xFFFFFF;
 	free_array(input);

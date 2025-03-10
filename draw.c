@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdorazio <jdorazio@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: jdorazio <jdorazio@student.42.madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 19:56:28 by jdorazio          #+#    #+#             */
-/*   Updated: 2025/03/08 17:13:18 by jdorazio         ###   ########.fr       */
+/*   Updated: 2025/03/09 23:22:26 by jdorazio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ void	draw_map(t_display *mlx)
 		y++;
 	}
 	ft_printf("Drawing Complete. Updating Window...\n");
-	draw_sidebar(mlx);
 	mlx_put_image_to_window(mlx->mlx,  mlx->win, mlx->img->img, 0 ,0);
+	draw_sidebar(mlx);
 	sidebar_description(mlx);
 }
 
@@ -64,18 +64,33 @@ void	init_bresenham_line(t_point *p1, t_point *p2, t_delta *delta)
 	I STILL HAVE TO ADD A FUNCTIONALITY FOR COLOR INPUT
 
 */
+
+int interpolate_color(int start_color, int end_color, float factor)
+{
+    int red = ((1 - factor) * ((start_color >> 16) & 0xFF)) + (factor * ((end_color >> 16) & 0xFF));
+    int green = ((1 - factor) * ((start_color >> 8) & 0xFF)) + (factor * ((end_color >> 8) & 0xFF));
+    int blue = ((1 - factor) * (start_color & 0xFF)) + (factor * (end_color & 0xFF));
+
+    return (red << 16) | (green << 8) | blue;
+}
+
 void	bresenham_line(t_display *mlx, t_point p1, t_point p2)
 {
 	t_delta	delta;
 	int		err;
 	int		err2;
-	int		color;
-
+    int steps = (abs(p2.sx - p1.sx) > abs(p2.sy - p1.sy)) ? abs(p2.sx - p1.sx) : abs(p2.sy - p1.sy);
+    float t = 0.0;
+	
 	init_bresenham_line(&p1, &p2, &delta);
 	err = delta.dx - delta.dy;
 	while (p1.sx != p2.sx || p1.sy != p2.sy)
 	{
-		put_pixel(mlx, p1.sx, p1.sy, 0xFFFFFF);
+		int color = interpolate_color(p1.color, p2.color, t / steps);
+
+		put_pixel(mlx, p1.sx, p1.sy, color);
+		t++;
+
 		err2 = 2 * err;
 		if (err2 > -delta.dy)
 		{
@@ -119,15 +134,15 @@ void	isometric(t_point *p, t_display *mlx)
 	int x_offset;
 	int y_offset;
 
-	x_offset = WIDTH / 2;
-	y_offset= HEIGHT / 2;
-	p->x = p->x * mlx->zoom * ZOOM;
-	p->y = p->y * mlx->zoom* ZOOM;
-	p->z = (p->z  * mlx->zoom * ZOOM) / 4;
+	x_offset = WIDTH - ((mlx->map->width * mlx->zoom));;
+	y_offset= HEIGHT / 2 - ((mlx->map->height * mlx->zoom) / 2);;
+	p->x = p->x * mlx->zoom;
+	p->y = p->y * mlx->zoom;
+	p->z = (p->z  * mlx->zoom) / 5;
 	rot_x(p, mlx->rot_x);
 	rot_z(p, mlx->rot_z);
-	p->sx = ((p->x - p->y) * cos(-M_PI / 6)) + x_offset;
-	p->sy = ((p->x + p->y) * sin (-M_PI / 6) - p->z) + y_offset;
+	p->sx = ((p->x - p->y) * cos(-ANGLE)) + x_offset;
+	p->sy = ((p->x + p->y) * sin (-ANGLE) - p->z) + y_offset;
 }
 void	rot_x(t_point *p, float angle)
 {
@@ -145,6 +160,7 @@ void	rot_z(t_point *p, float angle)
 	int	x;
 	int	y;
 
+	angle += M_PI;
 	y = p->x * cos(angle) - p->y * sin(angle);
 	x = p->x * sin(angle) + p->y * cos(angle);
 	p->y = y;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_init.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdorazio <jdorazio@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: jdorazio <jdorazio@student.42.madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 13:48:39 by jdorazio          #+#    #+#             */
-/*   Updated: 2025/03/08 16:24:40 by jdorazio         ###   ########.fr       */
+/*   Updated: 2025/03/09 20:44:01 by jdorazio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,16 @@ int	map_init(char *file, t_map *map)
 	map->color = 0;
 	map->z_max = INT_MIN;
 	map->z_min = INT_MAX;
+	// printf("Map Height = %d\n", map->height);
 	if (get_height(file, map))
 		return (1);
+	// printf("Map Height = %d\n", map->height);
+	// printf("Map ancho = %d\n", map->width);
+
 	if (get_width(file, map))
 		return (1);
+	// printf("Map ancho = %d\n", map->width);
+
 	map->matrix = malloc(map->height * sizeof(int *));
 	map->color = malloc(map->height * sizeof(int *));
 	if (!map->matrix || !map->color)
@@ -81,8 +87,6 @@ int	fill_matrix(int fd, t_map *map)
 	return (0);
 }
 
-
-
 void	load_map(char *file, t_map *map)
 {
 	int		fd;
@@ -96,20 +100,10 @@ void	load_map(char *file, t_map *map)
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
 		terminate(2, NULL);
+	ft_printf("Starting to load Map\n");
 	if (fill_matrix(fd, map) == 1)
-	{
-		printf("Failed to create matrix\n");
-		// Free all allocated memory before exiting
-		for (int i = 0; i < map->height; i++)
-		{
-			free(map->matrix[i]);
-			free(map->color[i]);
-		}
-		close(fd);
-		free(map->matrix);
-		free(map->color);
 		exit(EXIT_FAILURE);
-	}
 	close(fd);
 	z_values(map);
+	ft_printf("Map loaded!\n");
 }
