@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validate.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdorazio <jdorazio@student.42.madrid.co    +#+  +:+       +#+        */
+/*   By: jdorazio <jdorazio@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 14:37:22 by jdorazio          #+#    #+#             */
-/*   Updated: 2025/03/09 20:42:55 by jdorazio         ###   ########.fr       */
+/*   Updated: 2025/03/10 19:45:39 by jdorazio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

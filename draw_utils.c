@@ -1,27 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   draw_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jdorazio <jdorazio@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/06 14:17:04 by jdorazio          #+#    #+#             */
-/*   Updated: 2025/03/10 19:55:42 by jdorazio         ###   ########.fr       */
+/*   Created: 2025/03/10 20:24:17 by jdorazio          #+#    #+#             */
+/*   Updated: 2025/03/10 20:24:33 by jdorazio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int	main(int ac, char **av)
+void	rot_x(t_point *p, float angle)
 {
-	t_map	map;
+	int	y;
+	int	z;
 
-	if (ac != 2)
-		terminate(1, NULL);
-	ft_printf("Loading Map\n");
-	load_map(av[1], &map);
-	ft_printf("Starting System Init\n");
-	system_init(&map);
-	free_map(&map);
-	return (0);
+	angle += 0;
+	y = p->y * cos(angle) - p->z * sin(angle);
+	z = p->y * sin(angle) + p->z * cos(angle);
+	p->y = y;
+	p->z = z;
+}
+
+void	rot_z(t_point *p, float angle)
+{
+	int	x;
+	int	y;
+
+	angle += M_PI;
+	y = p->x * cos(angle) - p->y * sin(angle);
+	x = p->x * sin(angle) + p->y * cos(angle);
+	p->y = y;
+	p->x = x;
 }

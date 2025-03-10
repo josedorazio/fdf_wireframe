@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdorazio <jdorazio@student.42.madrid.co    +#+  +:+       +#+        */
+/*   By: jdorazio <jdorazio@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 19:56:28 by jdorazio          #+#    #+#             */
-/*   Updated: 2025/03/09 23:22:26 by jdorazio         ###   ########.fr       */
+/*   Updated: 2025/03/10 20:26:43 by jdorazio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "fdf.h"
-
+#include "fdf.h"
 
 void	draw_map(t_display *mlx)
 {
@@ -37,11 +36,10 @@ void	draw_map(t_display *mlx)
 		y++;
 	}
 	ft_printf("Drawing Complete. Updating Window...\n");
-	mlx_put_image_to_window(mlx->mlx,  mlx->win, mlx->img->img, 0 ,0);
+	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img->img, 0, 0);
 	draw_sidebar(mlx);
 	sidebar_description(mlx);
 }
-
 
 void	init_bresenham_line(t_point *p1, t_point *p2, t_delta *delta)
 {
@@ -60,37 +58,64 @@ void	init_bresenham_line(t_point *p1, t_point *p2, t_delta *delta)
 	delta->sign_y = y_sign;
 }
 
-/*
-	I STILL HAVE TO ADD A FUNCTIONALITY FOR COLOR INPUT
-
-*/
-
-int interpolate_color(int start_color, int end_color, float factor)
+void	bresenham_step(t_point *p1, t_delta *delta, int *err)
 {
-    int red = ((1 - factor) * ((start_color >> 16) & 0xFF)) + (factor * ((end_color >> 16) & 0xFF));
-    int green = ((1 - factor) * ((start_color >> 8) & 0xFF)) + (factor * ((end_color >> 8) & 0xFF));
-    int blue = ((1 - factor) * (start_color & 0xFF)) + (factor * (end_color & 0xFF));
+	int err2;
 
-    return (red << 16) | (green << 8) | blue;
+	err2 = 2 * (*err);
+	if (err2 > -delta->dy)
+	{
+		*err -= delta->dy;
+		p1->sx += delta->sign_x;
+	}
+	if (err2 < delta->dx)
+	{
+		*err += delta->dx;
+		p1->sy += delta->sign_y;
+	}
 }
 
 void	bresenham_line(t_display *mlx, t_point p1, t_point p2)
 {
 	t_delta	delta;
 	int		err;
+	int		steps;
+	float	t;
+	int color;
+
+	t = 0.0;
+	steps = (abs(p2.sx - p1.sx) > abs(p2.sy - p1.sy)) ? abs(p2.sx - p1.sx) : abs(p2.sy - p1.sy);
+	init_bresenham_line(&p1, &p2, &delta);
+	err = delta.dx - delta.dy;
+
+	while (p1.sx != p2.sx || p1.sy != p2.sy)
+	{
+		color = interpolate_color(p1.color, p2.color, t / steps);
+		put_pixel(mlx, p1.sx, p1.sy, color);
+		t++;
+		bresenham_step(&p1, &delta, &err);
+	}
+}
+
+
+void	bresenham_line(t_display *mlx, t_point p1, t_point p2)
+{
+	t_delta	delta;
+	int		err;
 	int		err2;
-    int steps = (abs(p2.sx - p1.sx) > abs(p2.sy - p1.sy)) ? abs(p2.sx - p1.sx) : abs(p2.sy - p1.sy);
-    float t = 0.0;
-	
+	int		steps;
+	float	t;
+
+	t = 0.0;
+	steps  = (abs(p2.sx - p1.sx) > abs(p2.sy - p1.sy)) ? abs(p2.sx - p1.sx) : abs(p2.sy - p1.sy);
 	init_bresenham_line(&p1, &p2, &delta);
 	err = delta.dx - delta.dy;
 	while (p1.sx != p2.sx || p1.sy != p2.sy)
 	{
-		int color = interpolate_color(p1.color, p2.color, t / steps);
 
+		int color = interpolate_color(p1.color, p2.color, t / steps);
 		put_pixel(mlx, p1.sx, p1.sy, color);
 		t++;
-
 		err2 = 2 * err;
 		if (err2 > -delta.dy)
 		{
@@ -123,7 +148,10 @@ t_point	create_point(int x, int y, t_display *mlx)
 	point.x = x;
 	point.y = y;
 	point.z = mlx->map->matrix[y][x];
-	point.color = mlx->map->color[y][x];
+	if (mlx->map->color && mlx->map->color[0][0] == 0xFFFFFF)
+		point.color = get_color(point.z, mlx);
+	else
+		point.color = mlx->map->color[y][x];
 	isometric(&point, mlx);
 	return (point);
 
@@ -144,25 +172,4 @@ void	isometric(t_point *p, t_display *mlx)
 	p->sx = ((p->x - p->y) * cos(-ANGLE)) + x_offset;
 	p->sy = ((p->x + p->y) * sin (-ANGLE) - p->z) + y_offset;
 }
-void	rot_x(t_point *p, float angle)
-{
-	int	y;
-	int	z;
 
-	y = p->y * cos(angle) - p->z * sin(angle);
-	z = p->y * sin(angle) + p->z * cos(angle);
-	p->y = y;
-	p->z = z;
-}
-
-void	rot_z(t_point *p, float angle)
-{
-	int	x;
-	int	y;
-
-	angle += M_PI;
-	y = p->x * cos(angle) - p->y * sin(angle);
-	x = p->x * sin(angle) + p->y * cos(angle);
-	p->y = y;
-	p->x = x;
-}

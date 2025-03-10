@@ -6,7 +6,7 @@
 /*   By: jdorazio <jdorazio@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 13:49:11 by jdorazio          #+#    #+#             */
-/*   Updated: 2025/03/08 16:38:42 by jdorazio         ###   ########.fr       */
+/*   Updated: 2025/03/10 19:03:29 by jdorazio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,3 @@ int	terminate(int error_code, void *ptr)
 		ft_printf("Failed Isometric Projection \n");
 	exit(EXIT_FAILURE);
 }
-
-/* me falta un free para fd, que en realidad
-lo que liberaria es FILE
-
-*/

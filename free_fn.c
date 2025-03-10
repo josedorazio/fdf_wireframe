@@ -6,7 +6,7 @@
 /*   By: jdorazio <jdorazio@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 23:25:46 by jdorazio          #+#    #+#             */
-/*   Updated: 2025/03/08 16:37:20 by jdorazio         ###   ########.fr       */
+/*   Updated: 2025/03/10 20:02:44 by jdorazio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 int	free_close(t_display *mlx)
 {
-    free_mlx_map(mlx);
-    ft_printf("FDF Closed Correctly\n");
-    exit(EXIT_SUCCESS);  // Close the program after freeing resources
-    return (0);  // Return 0 to avoid compiler warnings
+	free_mlx_map(mlx);
+	ft_printf("FDF Closed Correctly\n");
+	exit(EXIT_SUCCESS);  // Close the program after freeing resources
+	return (0);  // Return 0 to avoid compiler warnings
 }
 
 /*FUNCTION WAS CHANGED FOR FILL_MATRIX -> THIS MIGHT LEAD TO OTHER CHANGES*/

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_init.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdorazio <jdorazio@student.42.madrid.co    +#+  +:+       +#+        */
+/*   By: jdorazio <jdorazio@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 13:48:39 by jdorazio          #+#    #+#             */
-/*   Updated: 2025/03/09 20:44:01 by jdorazio         ###   ########.fr       */
+/*   Updated: 2025/03/10 19:56:18 by jdorazio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,10 @@ int	map_init(char *file, t_map *map)
 	map->color = 0;
 	map->z_max = INT_MIN;
 	map->z_min = INT_MAX;
-	// printf("Map Height = %d\n", map->height);
 	if (get_height(file, map))
 		return (1);
-	// printf("Map Height = %d\n", map->height);
-	// printf("Map ancho = %d\n", map->width);
-
 	if (get_width(file, map))
 		return (1);
-	// printf("Map ancho = %d\n", map->width);
-
 	map->matrix = malloc(map->height * sizeof(int *));
 	map->color = malloc(map->height * sizeof(int *));
 	if (!map->matrix || !map->color)
@@ -47,7 +41,7 @@ int	init_matrix(t_map *map)
 		map->color[i] = malloc(map->width * sizeof(int));
 		if (!map->matrix[i] || !map->color[i])
 		{
-			while (i >= 0) // Free previous allocations before returning
+			while (i >= 0)
 			{
 				free(map->matrix[i]);
 				free(map->color[i]);
