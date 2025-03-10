@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdorazio <jdorazio@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: jdorazio <jdorazio@student.42.madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 14:15:39 by jdorazio          #+#    #+#             */
-/*   Updated: 2025/03/08 16:29:34 by jdorazio         ###   ########.fr       */
+/*   Updated: 2025/03/09 23:51:29 by jdorazio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 # define HEIGHT 1080
 # define SIDEBAR 350
 # define M_PI 3.14159265358979323846
-# define ZOOM 10
+# define ANGLE 0.523599 
 
 typedef struct s_map
 {
@@ -68,6 +68,8 @@ typedef struct	s_image {
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
+	int		height;
+	int		width;
 }		t_image;
 
 
@@ -81,7 +83,7 @@ typedef struct s_display
 	float	rot_x;
 	float	rot_y;
 	float	rot_z;
-	float	angle;
+
 }	t_display;
 
 
@@ -98,7 +100,7 @@ int	terminate(int error_code, void *ptr);
 // #----------# VALIDATE #----------#
 int		ft_is_sign(char c);
 int		validate(char *num);
-int		hexa(char *str);
+int		ft_atoi_base(char *color_str);
 void	convert(char *str, int *z, int *color);
 
 // #----------# MAP INIT #----------#
@@ -117,7 +119,7 @@ void	z_values(t_map *map);
 
 // #----------# START #----------#
 void	system_init(t_map *map);
-int	set_display_default(t_display *mlx, t_map *map);
+int		set_display_default(t_display *mlx, t_map *map);
 int		init_display_mlx(t_display *mlx);
 
 // #----------# PROJECTION #----------#
