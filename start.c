@@ -6,7 +6,7 @@
 /*   By: jdorazio <jdorazio@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 14:50:21 by jdorazio          #+#    #+#             */
-/*   Updated: 2025/03/11 19:58:20 by jdorazio         ###   ########.fr       */
+/*   Updated: 2025/03/11 20:35:41 by jdorazio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@ int	init_display_mlx(t_display *mlx)
 	if (!mlx)
 		return (1);
 	mlx->mlx = mlx_init();
-	mlx->win = mlx_new_window(mlx->mlx, WIDTH, HEIGHT, "FDF - Wireframe");
 	mlx->img = ft_calloc(1, sizeof(t_image));
 	if (!mlx->img)
 		return (1);
+	mlx->win = mlx_new_window(mlx->mlx, WIDTH, HEIGHT, "FDF - Wireframe");
 	mlx->img->img = mlx_new_image(mlx->mlx, WIDTH, HEIGHT);
 	mlx->img->addr = mlx_get_data_addr(mlx->img->img, &mlx->img->bits_per_pixel,
 			&mlx->img->line_length, &mlx->img->endian);
@@ -35,14 +35,10 @@ int	set_display_default(t_display *mlx, t_map *map)
 	int	max_size;
 
 	mlx->map = map;
-	mlx->map = map;
 	max_size = map->height;
 	if (map->width > map->height)
 		max_size = map->width;
 	mlx->zoom = (WIDTH / max_size) * 0.4;
-	mlx->rot_x = 0;
-	mlx->rot_y = 0;
-	mlx->rot_z = 0;
 	return (0);
 }
 

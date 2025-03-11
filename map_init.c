@@ -6,7 +6,7 @@
 /*   By: jdorazio <jdorazio@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 13:48:39 by jdorazio          #+#    #+#             */
-/*   Updated: 2025/03/11 20:26:13 by jdorazio         ###   ########.fr       */
+/*   Updated: 2025/03/11 20:30:12 by jdorazio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ int	map_init(char *file, t_map *map)
 	map->width = 0;
 	map->z_max = INT_MIN;
 	map->z_min = INT_MAX;
-	printf("Z_MAX %d | Z MIN %d \n", map->z_max, map->z_min);
 	if (get_height(file, map))
 		terminate (3);
 	if (get_width(file, map))

@@ -6,7 +6,7 @@
 /*   By: jdorazio <jdorazio@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 22:57:25 by jdorazio          #+#    #+#             */
-/*   Updated: 2025/03/11 19:41:58 by jdorazio         ###   ########.fr       */
+/*   Updated: 2025/03/11 20:38:21 by jdorazio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 int	key_hook(int keycode, t_display *mlx)
 {
+	if (!mlx)
+		return (1);
 	if (keycode == KEY_ESC)
 		free_close(mlx);
 	if (keycode == KEY_SUM || keycode == KEY_SUM2)

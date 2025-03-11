@@ -6,7 +6,7 @@
 /*   By: jdorazio <jdorazio@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 23:25:46 by jdorazio          #+#    #+#             */
-/*   Updated: 2025/03/11 20:24:04 by jdorazio         ###   ########.fr       */
+/*   Updated: 2025/03/11 20:41:52 by jdorazio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ int	free_close(t_display *mlx)
 	free_mlx_map(mlx);
 	ft_printf("FDF Closed Correctly\n");
 	exit(EXIT_SUCCESS);
-	return (0);
 }
 
 void	free_map(t_map *map)
