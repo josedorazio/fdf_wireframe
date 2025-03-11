@@ -22,7 +22,7 @@ OBJS = $(SRCS:.c=.o)
 LIBFT = libft/libft.a
 PRINTF = printf/ft_printf.a
 GNL = get_next_line/gnl.a
-MLX_A = minilibx/libmlx.a
+MLX_A = minilibx-linux/libmlx.a
 
 CC = cc
 CFLAGS = -Wall -Werror -Wextra -fPIC
