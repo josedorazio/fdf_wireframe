@@ -6,7 +6,7 @@
 /*   By: jdorazio <jdorazio@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 14:05:50 by jdorazio          #+#    #+#             */
-/*   Updated: 2025/03/10 19:59:07 by jdorazio         ###   ########.fr       */
+/*   Updated: 2025/03/11 20:16:57 by jdorazio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ int	get_height(char *file, t_map *map)
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
 		return (1);
-	map->height = 0;
 	line = get_next_line(fd);
 	while (line != NULL)
 	{

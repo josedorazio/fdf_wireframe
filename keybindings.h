@@ -6,18 +6,16 @@
 /*   By: jdorazio <jdorazio@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 22:38:37 by jdorazio          #+#    #+#             */
-/*   Updated: 2025/03/08 14:44:23 by jdorazio         ###   ########.fr       */
+/*   Updated: 2025/03/11 19:19:09 by jdorazio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef KEY_BINDING_H
-# define KEY_BINDING_H
-
+#ifndef KEYBINDINGS_H
+# define KEYBINDINGS_H
 
 /* EVENTOS*/
 # define KP 02 // Evento Presión Tecla
 # define DN 17 // Evento Cierre Ventana
-
 
 /* KEY BINDING KEYBOARD*/
 # define KEY_ESC     65307
@@ -31,10 +29,10 @@
 # define KEY_8       56
 # define KEY_9       57
 # define KEY_0       48
-# define KEY_SUM     61    // '=' key
-# define KEY_MINUS     45    // '-' key
-# define KEY_SUM2    65451 // '+' on numeric keypad
-# define KEY_MINUS2    65453 // '-' on numeric keypad
+# define KEY_SUM     61
+# define KEY_MINUS     45
+# define KEY_SUM2    65451
+# define KEY_MINUS2    65453
 # define KEY_A       97
 # define KEY_S       115
 # define KEY_D       100

@@ -6,33 +6,32 @@
 /*   By: jdorazio <jdorazio@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 23:25:46 by jdorazio          #+#    #+#             */
-/*   Updated: 2025/03/10 20:02:44 by jdorazio         ###   ########.fr       */
+/*   Updated: 2025/03/11 20:24:04 by jdorazio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "fdf.h"
+#include "fdf.h"
 
 int	free_close(t_display *mlx)
 {
 	free_mlx_map(mlx);
 	ft_printf("FDF Closed Correctly\n");
-	exit(EXIT_SUCCESS);  // Close the program after freeing resources
-	return (0);  // Return 0 to avoid compiler warnings
+	exit(EXIT_SUCCESS);
+	return (0);
 }
 
-/*FUNCTION WAS CHANGED FOR FILL_MATRIX -> THIS MIGHT LEAD TO OTHER CHANGES*/
 void	free_map(t_map *map)
 {
 	int	y;
 
 	y = 0;
 	while (y < map->height)
-		{
-			free(map->matrix[y]);
-			if (map->color)
-				free(map->color[y]);
-			y++;
-		}
+	{
+		free(map->matrix[y]);
+		if (map->color[y])
+			free(map->color[y]);
+		y++;
+	}
 	free(map->matrix);
 	if (map->color)
 		free(map->color);

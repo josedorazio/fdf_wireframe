@@ -6,7 +6,7 @@
 /*   By: jdorazio <jdorazio@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 13:48:39 by jdorazio          #+#    #+#             */
-/*   Updated: 2025/03/10 19:56:18 by jdorazio         ###   ########.fr       */
+/*   Updated: 2025/03/11 20:26:13 by jdorazio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,15 @@ int	map_init(char *file, t_map *map)
 {
 	map->height = 0;
 	map->width = 0;
-	map->color = 0;
 	map->z_max = INT_MIN;
 	map->z_min = INT_MAX;
+	printf("Z_MAX %d | Z MIN %d \n", map->z_max, map->z_min);
 	if (get_height(file, map))
-		return (1);
+		terminate (3);
 	if (get_width(file, map))
-		return (1);
-	map->matrix = malloc(map->height * sizeof(int *));
-	map->color = malloc(map->height * sizeof(int *));
+		terminate (3);
+	map->matrix = ft_calloc(map->height, sizeof(int *));
+	map->color = ft_calloc(map->height, sizeof(int *));
 	if (!map->matrix || !map->color)
 		return (1);
 	return (0);
@@ -86,17 +86,17 @@ void	load_map(char *file, t_map *map)
 	int		fd;
 
 	if (check_extension(file))
-		terminate(1, NULL);
+		terminate(1);
 	if (map_init(file, map))
-		terminate(31, NULL);
+		terminate(2);
 	if (init_matrix(map))
-		terminate(33, NULL);
+		terminate(3);
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
-		terminate(2, NULL);
-	ft_printf("Starting to load Map\n");
+		terminate(2);
 	if (fill_matrix(fd, map) == 1)
-		exit(EXIT_FAILURE);
+		terminate(3);
+	ft_printf("Starting to load Map\n");
 	close(fd);
 	z_values(map);
 	ft_printf("Map loaded!\n");
