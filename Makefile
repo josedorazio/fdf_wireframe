@@ -14,8 +14,7 @@ NAME = fdf
 
 #  find *.c | xargs echo
 
-SRCS = errors.c free_fn.c key_events.c main.c map_init.c map_init_utils.c start.c validate.c\
-	draw.c draw_sidebar.c color.c draw_utils.c
+SRCS = src/color.c src/draw.c src/draw_sidebar.c src/draw_utils.c src/errors.c src/free_fn.c src/key_events.c src/main.c src/map_init.c src/map_init_utils.c src/start.c src/validate.c
 
 OBJS = $(SRCS:.c=.o)
 
@@ -23,15 +22,18 @@ LIBFT = libft/libft.a
 MLX_A = minilibx-linux/libmlx.a
 
 CC = cc
-CFLAGS = -Wall -Werror -Wextra -fPIC
+CFLAGS = -Wall -Werror -Wextra -fPIC \
+		-Iinc \
+		-Ilibft \
+		-Iresources/minilibx-linux
 #-g3 -fsanitize=address
 AR = ar rcs
-MLX_FLAGS = -Lminilibx-linux -lmlx -lX11 -lXext -lm
+MLX_FLAGS = -Lresources/minilibx-linux -lmlx -lX11 -lXext -lm
 
 all: $(NAME)
 
-$(NAME): $(OBJS) $(LIBFT)   $(MLX_A)
-		$(CC) $(CFLAGS) $(OBJS) $(LIBFT)   $(MLX_FLAGS) -no-pie -o $(NAME)
+$(NAME): $(OBJS) $(LIBFT) $(MLX_A)
+		$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(MLX_FLAGS) -no-pie -o $(NAME)
 
 %.o : %.c
 	$(CC) $(CFLAGS) -Iminilibx-linux -c $< -o $@
@@ -42,11 +44,11 @@ $(LIBFT):
 	@echo "Compiled libft"
 
 $(MLX_A):
-	make -C minilibx-linux
+	make -C resources/minilibx-linux
 	@echo "Compiled MINILIBX"
 
 clean:
-	make -C minilibx-linux clean
+	make -C resources/minilibx-linux clean
 	make -C libft clean
 	rm -f $(OBJS)
 
