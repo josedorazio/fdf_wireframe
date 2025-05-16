@@ -22,8 +22,8 @@
 # include <sys/stat.h>
 # include <fcntl.h>
 
-# include "libft/libft.h"
-# include "resources/minilibx-linux/mlx.h"
+# include "libft.h"
+# include "mlx.h"
 # include "keybindings.h"
 
 // Medidas de la interfaz
