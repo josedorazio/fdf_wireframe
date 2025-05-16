@@ -16,8 +16,6 @@
 * [File Format](#-file-format)
 * [Code Structure](#-code-structure)
 * [Dependencies](#-dependencies)
-* [Screenshots](#-screenshots)
-* [Author](#-author)
 
 ---
 
